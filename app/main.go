@@ -7,6 +7,9 @@ import (
 	"net/url"
 	"time"
 
+	sentryecho "github.com/getsentry/sentry-go/echo"
+
+	"github.com/getsentry/sentry-go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -62,7 +65,20 @@ func main() {
 	e := echo.New()
 	middL := _articleHttpDeliveryMiddleware.InitMiddleware()
 	e.Use(middL.CORS)
+	e.Use(middL.SENTRY)
 	e.Use(middleware.Logger())
+
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn:              viper.GetString(`sentry.dsn`),
+		TracesSampleRate: 1.0,
+	}); err != nil {
+		fmt.Printf("Sentry initialization failed: %v\n", err)
+	}
+
+	e.Use(sentryecho.New(sentryecho.Options{
+		Repanic: true,
+	}))
+
 	authorRepo := _authorRepo.NewMysqlAuthorRepository(dbConn)
 	ar := _articleRepo.NewMysqlArticleRepository(dbConn)
 
