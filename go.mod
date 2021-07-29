@@ -1,11 +1,11 @@
-module github.com/bxcodec/go-clean-arch
+module github.com/khihadysucahyo/go-clean-arch-boilerplate
 
 go 1.12
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/bxcodec/faker v1.4.2
-	github.com/getsentry/sentry-go v0.11.0 // indirect
+	github.com/getsentry/sentry-go v0.11.0
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/go-sql-driver/mysql v1.3.0

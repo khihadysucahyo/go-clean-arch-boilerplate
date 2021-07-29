@@ -15,11 +15,11 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
 
-	_articleHttpDelivery "github.com/bxcodec/go-clean-arch/article/delivery/http"
-	_articleHttpDeliveryMiddleware "github.com/bxcodec/go-clean-arch/article/delivery/http/middleware"
-	_articleRepo "github.com/bxcodec/go-clean-arch/article/repository/mysql"
-	_articleUcase "github.com/bxcodec/go-clean-arch/article/usecase"
-	_authorRepo "github.com/bxcodec/go-clean-arch/author/repository/mysql"
+	_articleHttpDelivery "github.com/khihadysucahyo/go-clean-arch-boilerplate/article/delivery/http"
+	_articleHttpDeliveryMiddleware "github.com/khihadysucahyo/go-clean-arch-boilerplate/article/delivery/http/middleware"
+	_articleRepo "github.com/khihadysucahyo/go-clean-arch-boilerplate/article/repository/mysql"
+	_articleUcase "github.com/khihadysucahyo/go-clean-arch-boilerplate/article/usecase"
+	_authorRepo "github.com/khihadysucahyo/go-clean-arch-boilerplate/author/repository/mysql"
 )
 
 func init() {
