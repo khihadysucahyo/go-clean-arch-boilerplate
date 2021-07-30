@@ -1,4 +1,4 @@
-
+.env
 vendor/
 article_clean
 _*

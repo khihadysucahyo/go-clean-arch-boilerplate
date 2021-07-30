@@ -23,23 +23,21 @@ import (
 )
 
 func init() {
-	viper.SetConfigFile(`config.json`)
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
-	}
+	viper.SetConfigFile(`.env`)
+	viper.AutomaticEnv()
+	viper.ReadInConfig()
 
-	if viper.GetBool(`debug`) {
+	if viper.GetBool(`DEBUG`) {
 		log.Println("Service RUN on DEBUG mode")
 	}
 }
 
 func main() {
-	dbHost := viper.GetString(`database.host`)
-	dbPort := viper.GetString(`database.port`)
-	dbUser := viper.GetString(`database.user`)
-	dbPass := viper.GetString(`database.pass`)
-	dbName := viper.GetString(`database.name`)
+	dbHost := viper.GetString(`DB_HOST`)
+	dbPort := viper.GetString(`DB_PORT`)
+	dbUser := viper.GetString(`DB_USER`)
+	dbPass := viper.GetString(`DB_PASS`)
+	dbName := viper.GetString(`DB_NAME`)
 	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPass, dbHost, dbPort, dbName)
 	val := url.Values{}
 	val.Add("parseTime", "1")
@@ -69,7 +67,7 @@ func main() {
 	e.Use(middleware.Logger())
 
 	if err := sentry.Init(sentry.ClientOptions{
-		Dsn:              viper.GetString(`sentry.dsn`),
+		Dsn:              viper.GetString(`SENTRY_DSN`),
 		TracesSampleRate: 1.0,
 	}); err != nil {
 		fmt.Printf("Sentry initialization failed: %v\n", err)
@@ -82,9 +80,9 @@ func main() {
 	authorRepo := _authorRepo.NewMysqlAuthorRepository(dbConn)
 	ar := _articleRepo.NewMysqlArticleRepository(dbConn)
 
-	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
+	timeoutContext := time.Duration(viper.GetInt("APP_TIMEOUT")) * time.Second
 	au := _articleUcase.NewArticleUsecase(ar, authorRepo, timeoutContext)
 	_articleHttpDelivery.NewArticleHandler(e, au)
 
-	log.Fatal(e.Start(viper.GetString("server.address")))
+	log.Fatal(e.Start(viper.GetString("APP_ADDRESS")))
 }
